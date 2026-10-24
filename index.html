@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>AURA & FLORA — Haute Floristry & Generative Botanical Studio</title>
+  <meta name="description" content="Artisanal luxury floral boutique powered by bespoke floristry, cinematic bloom visuals, and Google Gemini Nano Banana generative floral design.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-botanical">
+  <!-- Interactive Canvas for Floating Petals & Ambient Dust -->
+  <canvas id="petal-canvas"></canvas>
+
+  <!-- Ambient Sound Bar & Status Banner -->
+  <aside class="top-announcement">
+    <div class="announcement-content">
+      <span class="sparkle-icon">✦</span>
+      <span>Gemini Nano Banana 2.1 & Omni Video Floral Generation Enabled</span>
+      <span class="announcement-divider">|</span>
+      <span class="announcement-tag">Autumn Atelier Collection 2026</span>
+    </div>
+    <div class="top-actions">
+      <button id="ambient-sound-btn" class="pill-btn sound-toggle" aria-label="Toggle ambient nature soundscape" title="Play relaxing botanical garden ambient audio">
+        <svg class="sound-icon-off" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+        <svg class="sound-icon-on hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        <span class="sound-label">Ambient Sound</span>
+      </button>
+      <button id="api-modal-btn" class="pill-btn api-key-pill" title="Configure Google Gemini API Key for live custom prompts">
+        <span class="key-indicator"></span>
+        <span>Gemini API: <strong id="api-status-badge">Dual-Mode Ready</strong></span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Navigation -->
+  <header class="navbar-wrapper">
+    <nav class="navbar liquid-glass">
+      <a href="#hero" class="brand-logo">
+        <span class="brand-crest">✦</span>
+        <div class="brand-text">
+          <span class="brand-name">AURA & FLORA</span>
+          <span class="brand-sub">HAUTE BOTANIQUE · PARIS</span>
+        </div>
+      </a>
+
+      <div class="nav-links">
+        <a href="#studio" class="nav-link"><span class="nav-num">01</span> AI Floral Studio</a>
+        <a href="#catalog" class="nav-link"><span class="nav-num">02</span> Curated Blooms</a>
+        <a href="#craft" class="nav-link"><span class="nav-num">03</span> The Atelier</a>
+        <a href="#concierge" class="nav-link"><span class="nav-num">04</span> Bespoke Ordering</a>
+      </div>
+
+      <div class="nav-cta-group">
+        <button id="cart-toggle-btn" class="cart-btn liquid-glass-pill" aria-label="View floral cart">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="cart-label">Bag</span>
+          <span id="cart-counter" class="cart-count">0</span>
+        </button>
+
+        <a href="#studio" class="btn btn-primary cta-glow">
+          <span>Design Bespoke</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section with Autoplaying Ambient Bloom Video -->
+  <section id="hero" class="hero-section">
+    <div class="hero-video-container">
+      <video id="hero-video" class="hero-bg-video" autoplay muted loop playsinline preload="auto">
+        <source src="assets/bloom-hero.mp4" type="video/mp4">
+        <!-- Fallback CDN -->
+        <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260315_073750_51473149-4350-4920-ae24-c8214286f323.mp4" type="video/mp4">
+      </video>
+      <div class="hero-vignette"></div>
+      <div class="hero-mesh-gradient"></div>
+    </div>
+
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-badge liquid-glass-pill animate-fade-in">
+          <span class="pulse-dot"></span>
+          <span>Google Gemini Omni & Nano Banana Powered</span>
+        </div>
+
+        <h1 class="hero-title animate-fade-in delay-1">
+          Where Living Flora Meets <br>
+          <em class="editorial-serif italic-accent">Generative Artistry.</em>
+        </h1>
+
+        <p class="hero-description animate-fade-in delay-2">
+          Immerse yourself in haute botanical arrangements. Witness real-time blooming time-lapses and co-create one-of-a-kind bouquets with our Gemini Nano Banana intelligence.
+        </p>
+
+        <div class="hero-actions animate-fade-in delay-3">
+          <a href="#studio" class="btn btn-primary btn-large cta-glow">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>Launch AI Floral Studio</span>
+          </a>
+          <a href="#catalog" class="btn btn-secondary btn-large liquid-glass">
+            <span>Explore Collection</span>
+            <span class="btn-arrow">↓</span>
+          </a>
+        </div>
+
+        <!-- Video Controls Floating Badge -->
+        <div class="video-status-bar liquid-glass animate-fade-in delay-4">
+          <button id="video-playback-toggle" class="playback-btn" aria-label="Pause or play video">
+            <svg id="video-icon-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            <svg id="video-icon-play" class="hidden" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </button>
+          <div class="video-info">
+            <span class="video-title">Omni Bloom Cine-Loop #01</span>
+            <span class="video-status">4K Cinematic · Looping</span>
+          </div>
+          <div class="video-progress-ring">
+            <div id="video-progress-bar" class="video-bar-fill"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Stat Badges -->
+      <div class="hero-stats-panel liquid-glass-strong animate-fade-in delay-3">
+        <div class="stat-card">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">Organic French Stems</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-card">
+          <span class="stat-number">Nano Banana</span>
+          <span class="stat-label">AI Visual Synthesis</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-card">
+          <span class="stat-number">Omni / Veo</span>
+          <span class="stat-label">Generative Bloom Video</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive AI Floral Studio (The Core Feature) -->
+  <section id="studio" class="studio-section">
+    <div class="section-container">
+      <div class="section-header text-center">
+        <div class="section-pill liquid-glass-pill">
+          <span>✦ THE ATELIER LAB ✦</span>
+        </div>
+        <h2 class="section-title">
+          Nano Banana <em class="editorial-serif italic-accent">Floral Synthesis Studio</em>
+        </h2>
+        <p class="section-subtitle">
+          Select an artisanal recipe or compose your own prompt. Watch Nano Banana sculpt delicate petals, color palettes, and cinematic blooming animations.
+        </p>
+      </div>
+
+      <!-- Studio Interactive Console -->
+      <div class="studio-console-card liquid-glass-strong">
+        <!-- Preset Recipe Chips -->
+        <div class="preset-recipes-bar">
+          <span class="recipes-label">Master Sommelier Presets:</span>
+          <div class="recipe-chips-wrapper">
+            <button class="recipe-chip active" data-preset="midnight-dahlia">
+              <span class="chip-dot"></span>
+              <span>Midnight Dahlia & Baccara</span>
+            </button>
+            <button class="recipe-chip" data-preset="champagne-peony">
+              <span class="chip-dot"></span>
+              <span>Champagne Peony Cloud</span>
+            </button>
+            <button class="recipe-chip" data-preset="ethereal-meadow">
+              <span class="chip-dot"></span>
+              <span>Ethereal Wild Meadow Mist</span>
+            </button>
+            <button class="recipe-chip" data-preset="golden-ranunculus">
+              <span class="chip-dot"></span>
+              <span>Golden Hour Ranunculus</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Custom Prompt Input Bar -->
+        <div class="prompt-bar-container">
+          <div class="prompt-input-wrapper liquid-glass">
+            <div class="prompt-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            </div>
+            <input 
+              type="text" 
+              id="studio-prompt-input" 
+              class="prompt-input" 
+              placeholder="Describe your bespoke floral creation (e.g. Rare blue Himalayan poppies with frost crystal dew and amber garden roses)..."
+              value="Moody Parisian midnight dahlias with velvet black baccara roses, seeded eucalyptus, and dramatic chiaroscuro candlelight"
+            >
+            <button id="generate-studio-btn" class="btn btn-primary generate-action-btn">
+              <span class="btn-spinner hidden"></span>
+              <span class="btn-text">Generate Arrangement</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Studio Display Split Screen (Visualizer & Bloom Video Player) -->
+        <div class="studio-workspace-grid">
+          <!-- Left: High-Res Nano Banana Visual Render -->
+          <div class="studio-panel image-panel liquid-glass">
+            <div class="panel-header">
+              <div class="panel-tag">
+                <span class="engine-badge">Model: gemini-nano-banana-2.1</span>
+                <span class="render-mode">High Fidelity Still</span>
+              </div>
+              <div class="panel-actions">
+                <button id="btn-fullscreen-render" class="icon-action-btn" title="Inspect full resolution">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="studio-canvas-stage">
+              <div id="render-loading-overlay" class="render-loading-overlay hidden">
+                <div class="blooming-flower-loader">
+                  <div class="petal-loader p1"></div>
+                  <div class="petal-loader p2"></div>
+                  <div class="petal-loader p3"></div>
+                  <div class="petal-loader p4"></div>
+                  <div class="petal-center"></div>
+                </div>
+                <p id="loader-status-text">Synthesizing botanical layers with Nano Banana...</p>
+              </div>
+
+              <img 
+                id="studio-main-image" 
+                class="studio-rendered-image" 
+                src="assets/floral-midnight-dahlia.png" 
+                alt="AI Generated Midnight Dahlia & Black Baccara Luxury Arrangement"
+                onerror="this.src='https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1200&q=80'"
+              >
+
+              <div class="image-interactive-overlay">
+                <div class="magnify-hint">Hover to inspect floral texture</div>
+              </div>
+            </div>
+
+            <!-- Recipe Botanical Notes -->
+            <div class="arrangement-notes-card">
+              <div class="notes-header">
+                <div>
+                  <h4 id="display-recipe-title" class="recipe-name">Midnight Dahlia & Noir Baccara</h4>
+                  <span id="display-recipe-family" class="recipe-sub">Botanical Family: Asteraceae & Rosaceae Haute</span>
+                </div>
+                <span id="display-recipe-price" class="recipe-price">€185</span>
+              </div>
+
+              <div class="recipe-tags-row" id="display-recipe-tags">
+                <span class="meta-tag">Deep Velvet Noir</span>
+                <span class="meta-tag">Seeded Eucalyptus</span>
+                <span class="meta-tag">Artisanal Stone Urn</span>
+                <span class="meta-tag">Evening Chiaroscuro</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Generative Omni / Veo Blooming Video Player -->
+          <div class="studio-panel video-panel liquid-glass">
+            <div class="panel-header">
+              <div class="panel-tag">
+                <span class="engine-badge video-badge">Engine: Gemini Omni 1.1 Flash Video</span>
+                <span class="render-mode">Time-lapse Bloom Sequence</span>
+              </div>
+              <div class="panel-actions">
+                <button id="toggle-video-loop" class="icon-action-btn active" title="Seamless loop on">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="studio-video-stage">
+              <video 
+                id="studio-bloom-video" 
+                class="studio-rendered-video" 
+                autoplay 
+                muted 
+                loop 
+                playsinline 
+                preload="auto"
+              >
+                <source src="assets/bloom-hero.mp4" type="video/mp4">
+                <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260315_073750_51473149-4350-4920-ae24-c8214286f323.mp4" type="video/mp4">
+              </video>
+
+              <div class="video-ambient-glow"></div>
+
+              <!-- Video On-Screen HUD -->
+              <div class="video-hud-overlay">
+                <div class="hud-top">
+                  <span class="recording-badge"><span class="rec-dot"></span> BLOOMING REC</span>
+                  <span id="video-timestamp" class="time-display">00:04 / 00:12</span>
+                </div>
+                <div class="hud-bottom">
+                  <div class="bloom-speed-control">
+                    <label for="bloom-speed-range">Bloom Velocity:</label>
+                    <input type="range" id="bloom-speed-range" min="0.25" max="2.0" step="0.25" value="1.0">
+                    <span id="speed-val">1.0x</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Studio Actions -->
+            <div class="studio-cta-bar">
+              <button id="studio-add-cart-btn" class="btn btn-primary cta-glow flex-1">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <span>Add Arrangement to Atelier Bag</span>
+              </button>
+              <button id="studio-download-render-btn" class="btn btn-secondary liquid-glass" title="Download high resolution render">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Save Still</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Curated Haute Floristry Catalog -->
+  <section id="catalog" class="catalog-section">
+    <div class="section-container">
+      <div class="section-header-flex">
+        <div>
+          <div class="section-pill liquid-glass-pill">
+            <span>✦ HAUTE COLLECTION ✦</span>
+          </div>
+          <h2 class="section-title">
+            The Autumn <em class="editorial-serif italic-accent">Collection</em>
+          </h2>
+        </div>
+        
+        <!-- Filter Tabs -->
+        <div class="catalog-tabs-wrapper liquid-glass">
+          <button class="catalog-tab active" data-filter="all">All Sculptures</button>
+          <button class="catalog-tab" data-filter="romance">Nocturne & Romance</button>
+          <button class="catalog-tab" data-filter="ethereal">Meadow & Wild</button>
+          <button class="catalog-tab" data-filter="solstice">Solstice Gold</button>
+        </div>
+      </div>
+
+      <!-- 3D Tilt Cards Grid -->
+      <div class="catalog-grid" id="catalog-items-container">
+        <!-- Item 1 -->
+        <article class="flower-card liquid-glass" data-category="romance" data-id="midnight-dahlia">
+          <div class="card-media-wrapper">
+            <span class="card-pill-tag">Atelier Signature</span>
+            <img 
+              src="assets/floral-midnight-dahlia.png" 
+              alt="Midnight Dahlia & Noir Baccara" 
+              class="card-img" 
+              loading="lazy"
+              onerror="this.src='https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80'"
+            >
+            <button class="quick-view-btn" data-preset="midnight-dahlia">Inspect in Studio</button>
+          </div>
+          <div class="card-body">
+            <div class="card-title-row">
+              <h3 class="card-title">Midnight Dahlia & Noir</h3>
+              <span class="card-price">€185</span>
+            </div>
+            <p class="card-desc">Plum tree dahlias, Dutch black baccara velvet roses, and misty blue eucalyptus.</p>
+            <div class="card-footer">
+              <span class="stem-count">28 Curated Stems</span>
+              <button class="add-to-bag-btn" data-id="midnight-dahlia" data-title="Midnight Dahlia & Noir" data-price="185">
+                + Add to Bag
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Item 2 -->
+        <article class="flower-card liquid-glass" data-category="romance" data-id="champagne-peony">
+          <div class="card-media-wrapper">
+            <span class="card-pill-tag">Bestseller</span>
+            <img 
+              src="assets/floral-champagne-peony.png" 
+              alt="Champagne Peony Cloud" 
+              class="card-img" 
+              loading="lazy"
+              onerror="this.src='https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=800&q=80'"
+            >
+            <button class="quick-view-btn" data-preset="champagne-peony">Inspect in Studio</button>
+          </div>
+          <div class="card-body">
+            <div class="card-title-row">
+              <h3 class="card-title">Champagne Peony Cloud</h3>
+              <span class="card-price">€210</span>
+            </div>
+            <p class="card-desc">Lush Parisian blush peonies, off-white garden roses, and delicate trailing sweet pea vines.</p>
+            <div class="card-footer">
+              <span class="stem-count">34 Curated Stems</span>
+              <button class="add-to-bag-btn" data-id="champagne-peony" data-title="Champagne Peony Cloud" data-price="210">
+                + Add to Bag
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Item 3 -->
+        <article class="flower-card liquid-glass" data-category="ethereal" data-id="ethereal-meadow">
+          <div class="card-media-wrapper">
+            <span class="card-pill-tag">Artisan Wild</span>
+            <img 
+              src="assets/floral-ethereal-meadow.png" 
+              alt="Ethereal Wild Meadow Mist" 
+              class="card-img" 
+              loading="lazy"
+              onerror="this.src='https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=800&q=80'"
+            >
+            <button class="quick-view-btn" data-preset="ethereal-meadow">Inspect in Studio</button>
+          </div>
+          <div class="card-body">
+            <div class="card-title-row">
+              <h3 class="card-title">Ethereal Meadow Mist</h3>
+              <span class="card-price">€160</span>
+            </div>
+            <p class="card-desc">Sky-blue delphinium, organic German chamomile, wild French lavender, and delicate meadow grasses.</p>
+            <div class="card-footer">
+              <span class="stem-count">42 Field Stems</span>
+              <button class="add-to-bag-btn" data-id="ethereal-meadow" data-title="Ethereal Meadow Mist" data-price="160">
+                + Add to Bag
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Item 4 -->
+        <article class="flower-card liquid-glass" data-category="solstice" data-id="golden-ranunculus">
+          <div class="card-media-wrapper">
+            <span class="card-pill-tag">Limited Edition</span>
+            <img 
+              src="assets/floral-golden-ranunculus.png" 
+              alt="Golden Hour Ranunculus" 
+              class="card-img" 
+              loading="lazy"
+              onerror="this.src='https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=800&q=80'"
+            >
+            <button class="quick-view-btn" data-preset="golden-ranunculus">Inspect in Studio</button>
+          </div>
+          <div class="card-body">
+            <div class="card-title-row">
+              <h3 class="card-title">Golden Hour Ranunculus</h3>
+              <span class="card-price">€195</span>
+            </div>
+            <p class="card-desc">Apricot butterfly ranunculus, honey sunset roses, dried bunny tails, and amber glass vessel.</p>
+            <div class="card-footer">
+              <span class="stem-count">30 Warm Stems</span>
+              <button class="add-to-bag-btn" data-id="golden-ranunculus" data-title="Golden Hour Ranunculus" data-price="195">
+                + Add to Bag
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Atelier Craft & AI Philosophy -->
+  <section id="craft" class="craft-section">
+    <div class="section-container">
+      <div class="craft-split-layout">
+        <div class="craft-content">
+          <div class="section-pill liquid-glass-pill">
+            <span>✦ BOTANICAL PHILOSOPHY ✦</span>
+          </div>
+          <h2 class="section-title">
+            The Marriage of Petal & <br>
+            <em class="editorial-serif italic-accent">Algorithmic Precision</em>
+          </h2>
+          <p class="craft-p">
+            At AURA & FLORA, flowers are ephemeral poetry. By pairing century-old Parisian floral architecture with Google's latest multimodal models — <strong>Gemini Nano Banana 2.1</strong> and <strong>Gemini Omni Video</strong> — we allow clients to visualize impossible bouquets before a single stem is cut.
+          </p>
+
+          <div class="craft-features-list">
+            <div class="craft-feature-item">
+              <div class="feature-icon liquid-glass">✦</div>
+              <div>
+                <h4>Zero-Waste Pre-Visualization</h4>
+                <p>Every bespoke arrangement is synthesized in high-definition AI imagery and blooming time-lapse to guarantee aesthetic harmony before harvest.</p>
+              </div>
+            </div>
+            <div class="craft-feature-item">
+              <div class="feature-icon liquid-glass">✿</div>
+              <div>
+                <h4>Local French Micro-Farms</h4>
+                <p>Grown sustainably in the Loire Valley and Provence, cut in early morning dew, and delivered within 12 hours of arrangement.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="craft-visual-wrapper liquid-glass-strong">
+          <div class="quote-card-inner">
+            <span class="quote-symbol">“</span>
+            <blockquote class="craft-quote">
+              Nature does not hurry, yet every petal unfolds in its perfect rhythm. We build with that exact cadence.
+            </blockquote>
+            <div class="quote-author">
+              <span class="author-name">Éléonore de Vance</span>
+              <span class="author-title">Master Florist & Creative Director</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bespoke Concierge / Order Inquiries -->
+  <section id="concierge" class="concierge-section">
+    <div class="section-container">
+      <div class="concierge-box liquid-glass-strong">
+        <div class="concierge-text">
+          <div class="section-pill liquid-glass-pill">
+            <span>✦ PRIVATE COMMISSIONS ✦</span>
+          </div>
+          <h2 class="section-title">Bespoke Floral Inquiries & Galas</h2>
+          <p class="section-subtitle">
+            Whether for an intimate penthouse wedding or an architectural runway installation, our floral masters and AI studio craft custom botanicals to your specifications.
+          </p>
+        </div>
+
+        <form id="concierge-form" class="concierge-form">
+          <div class="form-row">
+            <input type="text" class="form-input liquid-glass" placeholder="Your Name" required>
+            <input type="email" class="form-input liquid-glass" placeholder="Email Address" required>
+          </div>
+          <div class="form-row">
+            <select class="form-input liquid-glass" required>
+              <option value="" disabled selected>Select Occasion / Style</option>
+              <option value="private-gala">Private Gala / Architecture</option>
+              <option value="intimate-wedding">Haute Wedding Florals</option>
+              <option value="bespoke-commission">Custom AI Generated Stem Commission</option>
+              <option value="weekly-curation">Weekly Maison Subscription</option>
+            </select>
+          </div>
+          <textarea class="form-input liquid-glass" rows="3" placeholder="Tell us about your floral vision or share the AI Recipe Prompt you generated in our Studio..."></textarea>
+          <button type="submit" class="btn btn-primary btn-large cta-glow">
+            <span>Submit Atelier Commission</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer-wrapper">
+    <div class="section-container footer-content">
+      <div class="footer-brand">
+        <span class="brand-crest">✦</span>
+        <span class="brand-name">AURA & FLORA</span>
+        <p class="footer-tagline">Haute botanical artistry powered by Gemini Nano Banana & Omni Video.</p>
+        <div class="motionsites-credit">
+          Motion & liquid aesthetic crafted with MotionSites design library.
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <h4>Studio</h4>
+        <a href="#studio">AI Floral Generator</a>
+        <a href="#hero">Omni Bloom Player</a>
+        <a href="#catalog">Autumn Catalog</a>
+      </div>
+      <div class="footer-links-group">
+        <h4>Maison</h4>
+        <a href="#craft">Philosophy</a>
+        <a href="#concierge">Private Concierge</a>
+        <a href="#">Paris Flagship</a>
+      </div>
+      <div class="footer-links-group">
+        <h4>Technology</h4>
+        <span>Model: gemini-nano-banana-2.1</span>
+        <span>Video: gemini-omni-1.1-flash</span>
+        <span>Client-side Web Audio API</span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="section-container footer-bottom-inner">
+        <span>© 2026 AURA & FLORA Atelier Botanique. All rights reserved.</span>
+        <span>Crafted for exquisite living.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Slide-out Cart Drawer -->
+  <div id="cart-drawer-overlay" class="drawer-overlay"></div>
+  <aside id="cart-drawer" class="cart-drawer liquid-glass-strong">
+    <div class="drawer-header">
+      <div class="drawer-title-group">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+        <h3>Your Atelier Bag</h3>
+      </div>
+      <button id="close-cart-btn" class="drawer-close-btn" aria-label="Close cart">&times;</button>
+    </div>
+
+    <div id="cart-items-list" class="cart-items-list">
+      <!-- Items dynamically populated via JS -->
+      <div class="empty-cart-state">
+        <span class="empty-icon">✿</span>
+        <p>Your bag is currently empty.</p>
+        <span class="empty-sub">Explore our curated sculptures or synthesize a custom bouquet in the AI Studio.</span>
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <div class="cart-summary-row">
+        <span>Subtotal</span>
+        <span id="cart-subtotal" class="cart-total-price">€0</span>
+      </div>
+      <div class="cart-summary-row fee-row">
+        <span>Curated Parisian Courier Delivery</span>
+        <span class="free-badge">Complimentary</span>
+      </div>
+      <button id="checkout-btn" class="btn btn-primary btn-large btn-full cta-glow">
+        <span>Proceed to Haute Checkout</span>
+        <span class="checkout-arrow">→</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Gemini API Key Configuration Modal -->
+  <div id="api-modal-overlay" class="drawer-overlay"></div>
+  <div id="api-modal" class="api-modal-card liquid-glass-strong">
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <span class="sparkle-icon">✦</span>
+        <h3>Google Gemini API Configuration</h3>
+      </div>
+      <button id="close-api-modal-btn" class="drawer-close-btn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-intro">
+        AURA & FLORA operates in <strong>Dual-Mode</strong>. The site is currently loaded with high-resolution pre-rendered botanical assets and blooming videos.
+      </p>
+      <div class="api-info-box liquid-glass">
+        <strong>Want live real-time AI generations?</strong>
+        <p>Provide your Google Gemini API key below to directly call <code>gemini-nano-banana-2.1</code> and <code>gemini-omni-1.1-flash</code> live from your browser!</p>
+      </div>
+
+      <div class="form-group">
+        <label for="gemini-api-key-input">Gemini API Key</label>
+        <input 
+          type="password" 
+          id="gemini-api-key-input" 
+          class="form-input liquid-glass" 
+          placeholder="AIzaSy..." 
+          autocomplete="off"
+        >
+        <span class="input-hint">Your API key is kept strictly in local storage and never leaves your browser.</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button id="save-api-key-btn" class="btn btn-primary cta-glow">Save & Activate Live Mode</button>
+      <button id="clear-api-key-btn" class="btn btn-secondary liquid-glass">Use Pre-Rendered Mode</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>
