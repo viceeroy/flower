@@ -124,7 +124,29 @@ const Elements = {
   // Concierge & Toasts
   conciergeForm: document.getElementById('concierge-form'),
   toastContainer: document.getElementById('toast-container'),
-  petalCanvas: document.getElementById('petal-canvas')
+  petalCanvas: document.getElementById('petal-canvas'),
+
+  // Mobile Navigation & Floating Bar
+  mobileMenuToggle: document.getElementById('mobile-menu-toggle'),
+  mobileNavDrawer: document.getElementById('mobile-nav-drawer'),
+  mobileNavOverlay: document.getElementById('mobile-nav-overlay'),
+  closeMobileNavBtn: document.getElementById('close-mobile-nav-btn'),
+  mobileNavLinks: document.querySelectorAll('.mobile-nav-link'),
+  mobileSoundBtn: document.getElementById('mobile-sound-btn'),
+  mobileApiBtn: document.getElementById('mobile-api-btn'),
+  mobileApiStatusBadge: document.getElementById('mobile-api-status-badge'),
+
+  // Mobile Studio Tabs
+  tabBtnImage: document.getElementById('tab-btn-image'),
+  tabBtnVideo: document.getElementById('tab-btn-video'),
+  imagePanel: document.querySelector('.studio-panel.image-panel'),
+  videoPanel: document.querySelector('.studio-panel.video-panel'),
+
+  // Mobile Floating Cart Pill
+  mobileCartFloat: document.getElementById('mobile-cart-float'),
+  floatCartCount: document.getElementById('float-cart-count'),
+  floatCartTotal: document.getElementById('float-cart-total'),
+  floatCartBtn: document.getElementById('float-cart-btn')
 };
 
 // --- Initialization ---
@@ -132,10 +154,12 @@ document.addEventListener('DOMContentLoaded', () => {
   initPetalCanvas();
   initHeroVideoControls();
   initStudioConsole();
+  initStudioMobileTabs();
   initCatalog();
   initCart();
   initApiModal();
   initAmbientSound();
+  initMobileNav();
   initConcierge();
   updateApiStatusUI();
 });
@@ -150,8 +174,9 @@ function initPetalCanvas() {
   let width, height;
   let mouse = { x: -1000, y: -1000, radius: 120 };
 
+  const isMobile = window.innerWidth <= 768;
   const petals = [];
-  const PETAL_COUNT = 24;
+  const PETAL_COUNT = isMobile ? 12 : 24;
 
   const colors = [
     'rgba(229, 195, 120, 0.45)', // Champagne gold
@@ -172,6 +197,20 @@ function initPetalCanvas() {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
   });
+
+  // Touch physics for mobile & tablets
+  function handleTouch(e) {
+    if (e.touches && e.touches.length > 0) {
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
+    }
+  }
+  window.addEventListener('touchstart', handleTouch, { passive: true });
+  window.addEventListener('touchmove', handleTouch, { passive: true });
+  window.addEventListener('touchend', () => {
+    mouse.x = -1000;
+    mouse.y = -1000;
+  }, { passive: true });
 
   class Petal {
     constructor() {
@@ -559,6 +598,10 @@ function initCart() {
   Elements.closeCartBtn.addEventListener('click', closeCart);
   Elements.cartOverlay.addEventListener('click', closeCart);
 
+  if (Elements.floatCartBtn) {
+    Elements.floatCartBtn.addEventListener('click', openCart);
+  }
+
   Elements.checkoutBtn.addEventListener('click', () => {
     if (State.cart.length === 0) {
       showToast('Your bag is currently empty.', '✿');
@@ -572,11 +615,13 @@ function initCart() {
 function openCart() {
   Elements.cartDrawer.classList.add('active');
   Elements.cartOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 
 function closeCart() {
   Elements.cartDrawer.classList.remove('active');
   Elements.cartOverlay.classList.remove('active');
+  document.body.style.overflow = '';
 }
 
 function addToCart(item) {
@@ -608,6 +653,9 @@ function renderCart() {
       </div>
     `;
     Elements.cartSubtotal.textContent = '€0';
+    if (Elements.mobileCartFloat) {
+      Elements.mobileCartFloat.classList.add('hidden');
+    }
     return;
   }
 
@@ -628,6 +676,17 @@ function renderCart() {
   }).join('');
 
   Elements.cartSubtotal.textContent = `€${subtotal}`;
+
+  // Update floating mobile pill
+  if (Elements.mobileCartFloat) {
+    if (Elements.floatCartCount) Elements.floatCartCount.textContent = State.cart.length;
+    if (Elements.floatCartTotal) Elements.floatCartTotal.textContent = `€${subtotal}`;
+    if (window.innerWidth <= 768) {
+      Elements.mobileCartFloat.classList.remove('hidden');
+    } else {
+      Elements.mobileCartFloat.classList.add('hidden');
+    }
+  }
 }
 
 window.removeFromCart = removeFromCart;
@@ -689,6 +748,7 @@ function startBotanicalSoundscape() {
     State.ambientAudioPlaying = true;
     Elements.ambientSoundBtn.querySelector('.sound-icon-off').classList.add('hidden');
     Elements.ambientSoundBtn.querySelector('.sound-icon-on').classList.remove('hidden');
+    updateMobileSoundUI();
     showToast('Ambient garden soundscape playing...', '♫');
   } catch (e) {
     console.error('AudioContext error:', e);
@@ -703,6 +763,7 @@ function stopBotanicalSoundscape() {
   State.ambientAudioPlaying = false;
   Elements.ambientSoundBtn.querySelector('.sound-icon-off').classList.remove('hidden');
   Elements.ambientSoundBtn.querySelector('.sound-icon-on').classList.add('hidden');
+  updateMobileSoundUI();
   showToast('Ambient sound muted.', '♫');
 }
 
@@ -749,9 +810,136 @@ function updateApiStatusUI() {
   if (State.apiKey) {
     Elements.apiStatusBadge.textContent = 'Live Key Active';
     Elements.apiStatusBadge.style.color = '#34d399';
+    if (Elements.mobileApiStatusBadge) {
+      Elements.mobileApiStatusBadge.textContent = 'Live Key Active';
+      Elements.mobileApiStatusBadge.style.color = '#34d399';
+    }
   } else {
     Elements.apiStatusBadge.textContent = 'Dual-Mode Ready';
     Elements.apiStatusBadge.style.color = 'var(--champagne-400)';
+    if (Elements.mobileApiStatusBadge) {
+      Elements.mobileApiStatusBadge.textContent = 'Dual-Mode Ready';
+      Elements.mobileApiStatusBadge.style.color = 'var(--champagne-400)';
+    }
+  }
+}
+
+// ==========================================================================
+// 10. Mobile AI Studio Tabs
+// ==========================================================================
+function initStudioMobileTabs() {
+  if (!Elements.tabBtnImage || !Elements.tabBtnVideo) return;
+
+  Elements.tabBtnImage.addEventListener('click', () => {
+    Elements.tabBtnImage.classList.add('active');
+    Elements.tabBtnImage.setAttribute('aria-selected', 'true');
+    Elements.tabBtnVideo.classList.remove('active');
+    Elements.tabBtnVideo.setAttribute('aria-selected', 'false');
+
+    if (Elements.imagePanel) Elements.imagePanel.classList.add('mobile-active-panel');
+    if (Elements.videoPanel) Elements.videoPanel.classList.remove('mobile-active-panel');
+  });
+
+  Elements.tabBtnVideo.addEventListener('click', () => {
+    Elements.tabBtnVideo.classList.add('active');
+    Elements.tabBtnVideo.setAttribute('aria-selected', 'true');
+    Elements.tabBtnImage.classList.remove('active');
+    Elements.tabBtnImage.setAttribute('aria-selected', 'false');
+
+    if (Elements.videoPanel) Elements.videoPanel.classList.add('mobile-active-panel');
+    if (Elements.imagePanel) Elements.imagePanel.classList.remove('mobile-active-panel');
+    
+    // Ensure video is playing when switched to
+    if (Elements.studioBloomVideo && Elements.studioBloomVideo.paused) {
+      Elements.studioBloomVideo.play();
+    }
+  });
+}
+
+// ==========================================================================
+// 11. Mobile Slide-out Navigation Drawer
+// ==========================================================================
+function initMobileNav() {
+  if (!Elements.mobileMenuToggle || !Elements.mobileNavDrawer) return;
+
+  function openMobileNav() {
+    Elements.mobileNavDrawer.classList.add('active');
+    Elements.mobileNavOverlay.classList.add('active');
+    Elements.mobileMenuToggle.classList.add('active');
+    Elements.mobileMenuToggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMobileNav() {
+    Elements.mobileNavDrawer.classList.remove('active');
+    Elements.mobileNavOverlay.classList.remove('active');
+    Elements.mobileMenuToggle.classList.remove('active');
+    Elements.mobileMenuToggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  Elements.mobileMenuToggle.addEventListener('click', () => {
+    if (Elements.mobileNavDrawer.classList.contains('active')) {
+      closeMobileNav();
+    } else {
+      openMobileNav();
+    }
+  });
+
+  if (Elements.closeMobileNavBtn) {
+    Elements.closeMobileNavBtn.addEventListener('click', closeMobileNav);
+  }
+  if (Elements.mobileNavOverlay) {
+    Elements.mobileNavOverlay.addEventListener('click', closeMobileNav);
+  }
+
+  // Close when tapping a section anchor link
+  Elements.mobileNavLinks.forEach((link) => {
+    link.addEventListener('click', closeMobileNav);
+  });
+
+  // Mobile sound toggle button
+  if (Elements.mobileSoundBtn) {
+    Elements.mobileSoundBtn.addEventListener('click', () => {
+      toggleAmbientSound();
+      updateMobileSoundUI();
+    });
+  }
+
+  // Mobile API settings button
+  if (Elements.mobileApiBtn) {
+    Elements.mobileApiBtn.addEventListener('click', () => {
+      closeMobileNav();
+      Elements.apiModalBtn.click();
+    });
+  }
+
+  // Escape key support
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeMobileNav();
+      closeCart();
+    }
+  });
+
+  // Window resize handler to maintain layout state
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      closeMobileNav();
+      if (Elements.mobileCartFloat) {
+        Elements.mobileCartFloat.classList.add('hidden');
+      }
+    } else if (State.cart.length > 0 && Elements.mobileCartFloat) {
+      Elements.mobileCartFloat.classList.remove('hidden');
+    }
+  });
+}
+
+function updateMobileSoundUI() {
+  if (!Elements.mobileSoundBtn) return;
+  const label = Elements.mobileSoundBtn.querySelector('.mobile-sound-label');
+  if (label) {
+    label.textContent = State.ambientAudioPlaying ? '✓ Ambient Audio Playing' : '♫ Ambient Garden Audio';
   }
 }
 

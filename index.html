@@ -64,10 +64,17 @@
           <span id="cart-counter" class="cart-count">0</span>
         </button>
 
-        <a href="#studio" class="btn btn-primary cta-glow">
+        <a href="#studio" class="btn btn-primary cta-glow desktop-cta">
           <span>Design Bespoke</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
+
+        <!-- Mobile Hamburger Toggle -->
+        <button id="mobile-menu-toggle" class="mobile-menu-btn liquid-glass-pill" aria-label="Open mobile navigation menu" aria-expanded="false">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
       </div>
     </nav>
   </header>
@@ -208,10 +215,22 @@
           </div>
         </div>
 
+        <!-- Mobile Studio Segmented Tab Bar -->
+        <div class="mobile-studio-tab-bar liquid-glass-pill" role="tablist" aria-label="AI Studio View Mode">
+          <button id="tab-btn-image" class="studio-tab-btn active" role="tab" aria-selected="true" data-tab="image">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>Still Render</span>
+          </button>
+          <button id="tab-btn-video" class="studio-tab-btn" role="tab" aria-selected="false" data-tab="video">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+            <span>Bloom Video</span>
+          </button>
+        </div>
+
         <!-- Studio Display Split Screen (Visualizer & Bloom Video Player) -->
         <div class="studio-workspace-grid">
           <!-- Left: High-Res Nano Banana Visual Render -->
-          <div class="studio-panel image-panel liquid-glass">
+          <div class="studio-panel image-panel liquid-glass mobile-active-panel">
             <div class="panel-header">
               <div class="panel-tag">
                 <span class="engine-badge">Model: gemini-nano-banana-2.1</span>
@@ -668,6 +687,47 @@
       <button id="clear-api-key-btn" class="btn btn-secondary liquid-glass">Use Pre-Rendered Mode</button>
     </div>
   </div>
+
+  <!-- Mobile Slide-Out Navigation Drawer -->
+  <div id="mobile-nav-overlay" class="drawer-overlay"></div>
+  <aside id="mobile-nav-drawer" class="mobile-nav-drawer liquid-glass-strong" aria-label="Mobile Navigation">
+    <div class="mobile-nav-header">
+      <div class="brand-text">
+        <span class="brand-name">AURA & FLORA</span>
+        <span class="brand-sub">HAUTE BOTANIQUE · PARIS</span>
+      </div>
+      <button id="close-mobile-nav-btn" class="drawer-close-btn" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="mobile-nav-links">
+      <a href="#studio" class="mobile-nav-link" data-close-nav><span class="nav-num">01</span> AI Floral Studio</a>
+      <a href="#catalog" class="mobile-nav-link" data-close-nav><span class="nav-num">02</span> Curated Blooms</a>
+      <a href="#craft" class="mobile-nav-link" data-close-nav><span class="nav-num">03</span> The Atelier</a>
+      <a href="#concierge" class="mobile-nav-link" data-close-nav><span class="nav-num">04</span> Bespoke Ordering</a>
+    </div>
+    <div class="mobile-nav-footer">
+      <button id="mobile-sound-btn" class="pill-btn sound-toggle" aria-label="Toggle ambient garden soundscape">
+        <span class="mobile-sound-label">♫ Ambient Garden Audio</span>
+      </button>
+      <button id="mobile-api-btn" class="pill-btn api-key-pill" aria-label="Open Gemini API Settings">
+        <span class="key-indicator"></span>
+        <span id="mobile-api-status-badge">Gemini Settings</span>
+      </button>
+      <div class="mobile-nav-note">Gemini Nano Banana 2.1 & Omni Video Enabled</div>
+    </div>
+  </aside>
+
+  <!-- Mobile Floating Cart Pill -->
+  <aside id="mobile-cart-float" class="mobile-cart-float liquid-glass-strong hidden">
+    <div class="cart-float-info">
+      <span class="cart-float-count"><strong id="float-cart-count">0</strong> in bag</span>
+      <span class="cart-float-dot">·</span>
+      <span id="float-cart-total" class="cart-float-total">€0</span>
+    </div>
+    <button id="float-cart-btn" class="btn btn-primary btn-sm cta-glow">
+      <span>View Bag</span>
+      <span class="btn-arrow">→</span>
+    </button>
+  </aside>
 
   <!-- Toast Notification Container -->
   <div id="toast-container" class="toast-container"></div>
